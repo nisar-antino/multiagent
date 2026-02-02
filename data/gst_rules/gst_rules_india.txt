@@ -1,0 +1,229 @@
+# GST (Goods and Services Tax) Rules - India
+
+## Rule 86B - Restrictions on Use of Input Tax Credit
+
+### Overview
+Rule 86B of the CGST Rules, 2017 restricts the availment of input tax credit (ITC) for certain registered persons.
+
+### Applicability
+This rule applies to registered persons whose:
+- Output tax liability in a month is less than ₹50 lakhs (₹5,000,000)
+- Value of taxable supply (other than exempt supply and zero-rated supply) in a month exceeds ₹50 lakhs
+
+### ITC Limitation
+**A registered person covered under this provision can avail ITC only up to 99% of the eligible ITC in respect of invoices or debit notes.**
+
+The remaining 1% can only be availed after discharge of output tax liability in cash.
+
+### Exceptions
+The following categories are NOT covered under Rule 86B:
+1. Government departments and local authorities
+2. Public sector undertakings
+3. Registered persons having an average output tax liability of more than ₹50 lakhs per month in the preceding financial year
+4. Registered persons who have already deposited 50% or more of output tax liability using the electronic cash ledger in each of the last two months
+
+### Example Calculation
+If total eligible ITC for a month = ₹10,00,000
+- Maximum ITC that can be availed = ₹9,90,000 (99%)
+- Minimum cash payment required = ₹10,000 (1%)
+
+### Effective Date
+This rule has been effective from January 1, 2021.
+
+---
+
+## Input Tax Credit (ITC) - General Rules
+
+### Definition
+Input Tax Credit means the GST paid on purchases (inputs, capital goods, or input services) which can be used to offset the GST liability on sales (output).
+
+### Eligibility for ITC
+To claim ITC, the following conditions must be met:
+1. Possession of a tax invoice or debit note
+2. Goods or services have been received
+3. Tax charged has been paid to the government by the supplier
+4. Return has been furnished
+
+### ITC Restrictions
+ITC is NOT available for:
+- Motor vehicles used for personal purposes
+- Food and beverages, outdoor catering
+- Membership of clubs, health and fitness centers
+- Travel benefits to employees
+- Works contract services for construction of immovable property (except plant and machinery)
+
+### Time Limit for Claiming ITC
+ITC must be claimed:
+- Before filing of return for September following the end of financial year, OR
+- Before filing of annual return
+Whichever is earlier.
+
+---
+
+## CGST, SGST, and IGST - Tax Structure
+
+### Intra-State Supply (Within Same State)
+For supplies within the same state:
+- **CGST (Central GST)** - Collected by Central Government
+- **SGST (State GST)** - Collected by State Government
+
+**Both CGST and SGST are levied at equal rates.**
+
+**Example:** For an 18% tax rate:
+- CGST = 9%
+- SGST = 9%
+- Total = 18%
+
+### Inter-State Supply (Between Different States)
+For supplies between different states:
+- **IGST (Integrated GST)** - Collected by Central Government
+
+**Example:** For an 18% tax rate:
+- IGST = 18%
+
+### Place of Supply Determination
+The place of supply determines whether a transaction is intra-state or inter-state:
+- If supplier and recipient are in the same state → Intra-state (CGST + SGST)
+- If supplier and recipient are in different states → Inter-state (IGST)
+
+---
+
+## Invoice Requirements under GST
+
+### Mandatory Details on Tax Invoice
+Every GST invoice must contain:
+1. Invoice number and date
+2. Name, address and GSTIN of supplier
+3. Name, address and GSTIN of recipient (if registered)
+4. HSN code of goods or SAC code of services
+5. Description of goods or services
+6. Quantity and unit
+7. Total value
+8. Taxable value
+9. Tax rate (CGST, SGST or IGST)
+10. Tax amount
+11. Place of supply
+12. Signature or digital signature
+
+### Tax Invoice Time Limit
+Tax invoice must be issued:
+- **For goods:** Before or at the time of removal/delivery
+- **For services:** Within 30 days from the date of supply
+
+### Serial Numbering
+Invoices must be serially numbered with a unique number for each financial year.
+
+---
+
+## Reverse Charge Mechanism (RCM)
+
+### Definition
+Reverse Charge means the liability to pay tax is on the recipient of goods or services instead of the supplier.
+
+### Applicability
+Reverse charge applies in specific cases notified by the government, including:
+1. Services by goods transport agency (GTA)
+2. Services by an advocate or legal services
+3. Services by arbitral tribunals
+4. Sponsorship services
+5. Import of services from outside India
+
+### Compliance
+Under RCM:
+- Recipient must pay GST directly to the government
+- Self-invoice or payment voucher must be issued
+- Regular GST returns must be filed
+
+---
+
+## Compliance Thresholds
+
+### Registration Threshold
+GST registration is mandatory if aggregate turnover exceeds:
+- ₹40 lakhs for goods (₹20 lakhs for special category states)
+- ₹20 lakhs for services (₹10 lakhs for special category states)
+
+### Composition Scheme Threshold
+Businesses with turnover up to ₹1.5 crore can opt for composition scheme:
+- Pay tax at fixed rates (1% to 6% depending on category)
+- File quarterly returns instead of monthly
+- Cannot claim input tax credit
+
+### E-Invoice Threshold
+E-invoicing is mandatory for businesses with turnover exceeding ₹5 crore.
+
+---
+
+## Penalties for Non-Compliance
+
+### Late Fee for Return Filing
+- ₹50 per day for CGST
+- ₹50 per day for SGST
+- Maximum: ₹10,000
+
+### Interest on Late Payment
+- 18% per annum on the outstanding tax amount
+- Calculated from the due date until the date of payment
+
+### Penalties for Tax Evasion
+- 100% of tax amount evaded or
+- ₹10,000
+Whichever is higher
+
+### Imprisonment
+Fraudulent evasion of tax exceeding ₹5 crore may attract imprisonment up to 5 years along with monetary penalty.
+
+---
+
+## Common GST Tax Rates
+
+### 0% (Exempt/Zero-rated)
+- Fresh vegetables, fruits, milk
+- Educational services
+- Healthcare services
+
+### 5%
+- Household necessities, footwear below ₹500
+- Small restaurants (non-AC)
+- Transport services
+
+### 12%
+- Processed food, butter, ghee
+- Computers, mobile phones
+
+### 18%
+- Most goods and services
+- IT services, financial services
+- Restaurants with AC/liquor license
+
+### 28%
+- Luxury items, automobiles
+- Aerated drinks, tobacco products
+- Five-star hotel accommodation
+
+---
+
+## Record Keeping Requirements
+
+### Documents to be Maintained
+Registered persons must maintain:
+1. Tax invoices
+2. Credit and debit notes
+3. Delivery challans
+4. Receipt vouchers
+5. Payment vouchers
+6. E-way bills
+7. Books of accounts
+
+### Retention Period
+All records must be retained for **72 months (6 years)** from the due date of filing annual return for the relevant financial year.
+
+### Digital Records
+Records can be maintained electronically if:
+- Data is verifiable and accessible
+- Proper backup is maintained
+- Audit trail is preserved
+
+---
+
+This document covers key GST rules and compliance requirements for businesses in India. Always consult with a tax professional for specific situations.

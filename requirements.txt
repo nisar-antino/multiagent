@@ -1,0 +1,33 @@
+# LangChain and LangGraph
+langchain>=0.1.0
+langgraph>=0.0.20
+langchain-community>=0.0.20
+langchain-google-genai>=0.0.5
+
+# Google Generative AI
+google-generativeai>=0.3.0
+
+# Vector Database
+chromadb>=0.4.22
+
+# Database
+pymysql>=1.1.0
+sqlalchemy>=2.0.0
+
+# Environment and Configuration
+python-dotenv>=1.0.0
+
+# SQL Parsing and Security
+sqlparse>=0.4.4
+
+# Token Counting
+tiktoken>=0.5.2
+
+# PDF Processing
+pypdf>=3.17.0
+langchain-text-splitters>=0.0.1
+
+# Utilities
+colorama>=0.4.6
+pydantic>=2.5.0
+tenacity>=8.2.3
