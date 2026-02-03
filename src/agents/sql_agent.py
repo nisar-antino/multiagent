@@ -116,6 +116,8 @@ SQL Query:"""
     
     def _clean_sql(self, sql: str) -> str:
         """Clean and extract SQL from LLM response."""
+        import re
+        
         sql = sql.strip()
         
         # Remove markdown code blocks if present
@@ -126,10 +128,21 @@ SQL Query:"""
         # Remove any remaining backticks or 'sql' prefix
         sql = sql.replace("```sql", "").replace("```", "").strip()
         
-        # Remove trailing semicolons (not needed and could cause issues)
-        sql = sql.rstrip(";")
+        # Remove control characters and other non-printable characters
+        # Keep only printable ASCII characters, newlines, tabs, and common whitespace
+        sql = re.sub(r'[^\x20-\x7E\n\r\t]', '', sql)
         
-        return sql
+        # Remove anything after a semicolon (including the semicolon)
+        # This prevents issues with extra junk after the query
+        sql = sql.split(';')[0].strip()
+        
+        # Clean up extra whitespace
+        sql = ' '.join(sql.split())
+        
+        # Restore proper formatting for readability (optional, but nice)
+        sql = sql.replace(' FROM ', '\nFROM ').replace(' WHERE ', '\nWHERE ').replace(' ORDER BY ', '\nORDER BY ')
+        
+        return sql.strip()
     
     def execute_sql(self, sql_query: str) -> tuple[bool, List[Dict[str, Any]], Optional[str]]:
         """

@@ -67,7 +67,15 @@ class GeminiLLM:
         try:
             response = self.model.invoke(prompt)
             logger.debug(f"Generated response for prompt: {prompt[:100]}...")
-            return response.content
+            
+            # Ensure we always return a string
+            content = response.content
+            if isinstance(content, list):
+                content = ' '.join(str(item) for item in content)
+            elif not isinstance(content, str):
+                content = str(content)
+            
+            return content
         except Exception as e:
             logger.error(f"Failed to generate text: {e}")
             raise

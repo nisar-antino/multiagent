@@ -157,6 +157,13 @@ Answer:"""
     
     try:
         answer = llm.generate_text(prompt)
+        
+        # Ensure answer is a string (handle cases where LLM might return a list or other type)
+        if isinstance(answer, list):
+            answer = ' '.join(str(item) for item in answer)
+        elif not isinstance(answer, str):
+            answer = str(answer)
+        
         state['final_answer'] = answer
         
         # Extract compliance flags
