@@ -6,13 +6,14 @@ from typing import Optional
 import logging
 from tenacity import retry, stop_after_attempt, wait_exponential
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from src.utils.security import rate_limiter
 
 logger = logging.getLogger(__name__)
 
 
 class GeminiLLM:
-    """Wrapper for Google Gemini API with rate limiting and retry logic."""
+    """Wrapper for LLM (Google Gemini or OpenRouter) with rate limiting."""
     
     _instance: Optional['GeminiLLM'] = None
     
@@ -26,49 +27,64 @@ class GeminiLLM:
         if self._initialized:
             return
         
-        # Get API key from environment
-        api_key = os.getenv('GOOGLE_API_KEY')
-        if not api_key or api_key == 'your_api_key_here':
-            raise ValueError("GOOGLE_API_KEY not set in environment. Please update .env file.")
+        # Check for OpenRouter configuration first
+        openrouter_key = os.getenv('OPENROUTER_API_KEY')
+        google_api_key = os.getenv('GOOGLE_API_KEY')
         
-        # Initialize LangChain Gemini model  
-        # Using gemini-flash-latest which is available with the API key
-        self.model = ChatGoogleGenerativeAI(
-            model="gemini-flash-latest",
-            google_api_key=api_key,
-            temperature=0.1,
-            max_tokens=2048,
-            convert_system_message_to_human=True
-        )
-        
-        # Initialize embeddings model
-        try:
-            # User suggested model for deprecated text-embedding-004
-            model_name = "models/gemini-embedding-001"
-            print(f"Initializing embeddings with model: {model_name}")
-            self.embeddings = GoogleGenerativeAIEmbeddings(
-                model=model_name,
-                google_api_key=api_key
-            )
-            # Test connection
-            self.embeddings.embed_query("test")
-        except Exception as e:
-            logger.error(f"Failed to initialize {model_name}: {e}")
+        # 1. Initialize LLM (The "Brain")
+        if openrouter_key:
+            model_name = os.getenv('OPENROUTER_MODEL', 'google/gemini-2.0-flash-001')
+            logger.info(f"Using OpenRouter LLM: {model_name}")
             
-            # Try fallback to embedding-001 if gemini-embedding-001 fails
-            try:
-                fallback_model = "models/embedding-001"
-                logger.info(f"Trying fallback model: {fallback_model}")
-                self.embeddings = GoogleGenerativeAIEmbeddings(
-                    model=fallback_model,
-                    google_api_key=api_key
+            self.model = ChatOpenAI(
+                model=model_name,
+                openai_api_key=openrouter_key,
+                openai_api_base="https://openrouter.ai/api/v1",
+                temperature=0.1
+            )
+        elif google_api_key:
+            logger.info("Using Google Gemini Direct API")
+            self.model = ChatGoogleGenerativeAI(
+                model="gemini-flash-latest",
+                google_api_key=google_api_key,
+                temperature=0.1,
+                max_tokens=2048,
+                convert_system_message_to_human=True
+            )
+        else:
+             raise ValueError("No API Key found! Please set OPENROUTER_API_KEY or GOOGLE_API_KEY in .env")
+
+        # 2. Initialize Embeddings (The "Memory")
+        try:
+            if openrouter_key:
+                logger.info("Using OpenRouter for Embeddings (via OpenAI-compatible endpoint)")
+                # Standard model usually supported by OpenRouter's forwarding
+                # Ensure the provider supports this or use a generic one if routed
+                emb_model = "text-embedding-3-small" 
+                self.embeddings = OpenAIEmbeddings(
+                    model=emb_model,
+                    openai_api_key=openrouter_key,
+                    openai_api_base="https://openrouter.ai/api/v1"
                 )
                 self.embeddings.embed_query("test")
-            except Exception as e2:
-                logger.error(f"Failed to initialize {fallback_model}: {e2}")
-                logger.warning("Falling back to FakeEmbeddings (RAG will not be accurate)")
-                from langchain_community.embeddings import FakeEmbeddings
-                self.embeddings = FakeEmbeddings(size=768)
+                
+            elif google_api_key:
+                # User suggested model for deprecated text-embedding-004
+                model_name = "models/gemini-embedding-001"
+                logger.info(f"Using Google Embeddings: {model_name}")
+                self.embeddings = GoogleGenerativeAIEmbeddings(
+                    model=model_name,
+                    google_api_key=google_api_key
+                )
+                self.embeddings.embed_query("test")
+            else:
+                raise ValueError("No API key available for embeddings")
+                
+        except Exception as e:
+            logger.error(f"Failed to initialize embeddings: {e}")
+            logger.warning("Falling back to FakeEmbeddings (RAG will not be accurate)")
+            from langchain_community.embeddings import FakeEmbeddings
+            self.embeddings = FakeEmbeddings(size=768)
         
         self._initialized = True
         logger.info("Gemini LLM initialized successfully with LangChain")

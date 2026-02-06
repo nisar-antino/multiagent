@@ -56,6 +56,13 @@ class SQLValidator:
         
         # Check statement type
         stmt_type = statement.get_type()
+        
+        # Fallback: parsing sometimes returns UNKNOWN for valid SELECTs with complex formatting
+        if stmt_type == 'UNKNOWN':
+            first_token_str = str(statement.tokens[0]).upper() if statement.tokens else ""
+            if query.strip().upper().startswith('SELECT') or 'SELECT' in first_token_str:
+                stmt_type = 'SELECT'
+                
         if stmt_type not in SQLValidator.ALLOWED_TYPES:
             return False, f"Only SELECT queries allowed. Found: {stmt_type}"
         

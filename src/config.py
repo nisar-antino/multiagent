@@ -10,20 +10,17 @@ env_path = Path(__file__).parent.parent / '.env'
 load_dotenv(dotenv_path=env_path)
 
 # Validate required environment variables
+# Validate required environment variables
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
-if not GOOGLE_API_KEY or GOOGLE_API_KEY == 'your_api_key_here':
+OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY')
+
+if (not GOOGLE_API_KEY or GOOGLE_API_KEY == 'your_api_key_here') and not OPENROUTER_API_KEY:
     print("\n" + "="*60)
-    print("ERROR: GOOGLE_API_KEY not configured!")
+    print("ERROR: No valid API Key configured!")
     print("="*60)
-    print("\nPlease follow these steps:")
-    print("1. Visit: https://aistudio.google.com/app/apikey")
-    print("2. Sign in and create an API key")
-    print("3. Copy the .env.template file to .env")
-    print("4. Replace 'your_api_key_here' with your actual API key")
-    print("\nExample .env file:")
-    print("  GOOGLE_API_KEY=AIza... (your actual key)")
+    print("\nPlease configure OPENROUTER_API_KEY or GOOGLE_API_KEY in .env")
     print("="*60 + "\n")
-    raise ValueError("GOOGLE_API_KEY not configured in .env file")
+    raise ValueError("API Key not configured in .env file")
 
 # Database configuration
 DB_CONFIG = {
