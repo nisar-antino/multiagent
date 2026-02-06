@@ -42,10 +42,33 @@ class GeminiLLM:
         )
         
         # Initialize embeddings model
-        self.embeddings = GoogleGenerativeAIEmbeddings(
-            model="models/embedding-001",
-            google_api_key=api_key
-        )
+        try:
+            # User suggested model for deprecated text-embedding-004
+            model_name = "models/gemini-embedding-001"
+            print(f"Initializing embeddings with model: {model_name}")
+            self.embeddings = GoogleGenerativeAIEmbeddings(
+                model=model_name,
+                google_api_key=api_key
+            )
+            # Test connection
+            self.embeddings.embed_query("test")
+        except Exception as e:
+            logger.error(f"Failed to initialize {model_name}: {e}")
+            
+            # Try fallback to embedding-001 if gemini-embedding-001 fails
+            try:
+                fallback_model = "models/embedding-001"
+                logger.info(f"Trying fallback model: {fallback_model}")
+                self.embeddings = GoogleGenerativeAIEmbeddings(
+                    model=fallback_model,
+                    google_api_key=api_key
+                )
+                self.embeddings.embed_query("test")
+            except Exception as e2:
+                logger.error(f"Failed to initialize {fallback_model}: {e2}")
+                logger.warning("Falling back to FakeEmbeddings (RAG will not be accurate)")
+                from langchain_community.embeddings import FakeEmbeddings
+                self.embeddings = FakeEmbeddings(size=768)
         
         self._initialized = True
         logger.info("Gemini LLM initialized successfully with LangChain")

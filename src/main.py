@@ -41,6 +41,30 @@ def print_section_header(title: str):
 
 def print_answer(answer: str):
     """Print the main answer."""
+    try:
+        # Try to parse if it looks like JSON/dict string
+        if isinstance(answer, str) and (answer.strip().startswith('{') or "'text':" in answer):
+            import ast
+            parsed = None
+            try:
+                parsed = json.loads(answer)
+            except:
+                try:
+                    parsed = ast.literal_eval(answer)
+                except:
+                    pass
+            
+            if isinstance(parsed, dict):
+                # Check for "answer": {"text": ...} or "text": ...
+                if 'answer' in parsed and isinstance(parsed['answer'], dict) and 'text' in parsed['answer']:
+                    print(f"{Fore.GREEN}{parsed['answer']['text']}{Style.RESET_ALL}")
+                    return
+                elif 'text' in parsed:
+                    print(f"{Fore.GREEN}{parsed['text']}{Style.RESET_ALL}")
+                    return
+    except Exception:
+        pass
+        
     print(f"{Fore.GREEN}{answer}{Style.RESET_ALL}")
 
 
