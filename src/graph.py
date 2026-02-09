@@ -127,7 +127,7 @@ def synthesizer_node(state: AgentState) -> AgentState:
     sql_query = state.get('sql_query', '')
     
     # Build synthesis prompt
-    prompt = f"""You are a GST compliance assistant. Provide a clear, accurate answer to the user's question.
+    prompt = f"""You are a GST compliance assistant. Provide a clear, direct, and actionable answer to the user's question.
 
 User Question: {query}
 
@@ -147,11 +147,22 @@ SQL Query Used: {sql_query}
 
 """
     
-    prompt += """Generate a comprehensive answer that:
-1. Directly answers the user's question
-2. Cites specific rules or data where applicable
-3. Highlights any compliance concerns if present
-4. Is clear and professional
+    prompt += """Generate a clear, direct answer following these guidelines:
+
+1. **Start with a direct answer:** Begin with "Yes" or "No" to the user's question
+2. **List violations clearly:** If violations exist, list them with:
+   - Month/Period
+   - Amount
+   - Threshold exceeded
+3. **Keep it concise:** Avoid lengthy explanations unless critical
+4. **Be actionable:** Focus on what the data shows, not what's missing
+5. **Cite rules briefly:** Reference regulations but don't over-explain
+
+For Rule 86B queries specifically:
+- If monthly totals exceed ₹50 lakhs, state "Yes, violations detected"
+- List each month with amount and excess
+- Briefly mention ITC restriction (99% limit, 1% cash payment)
+- Skip technical caveats about missing data
 
 Answer:"""
     

@@ -86,6 +86,40 @@ Requirements:
 - Include ORDER BY and LIMIT clauses when appropriate
 - Return valid MySQL syntax
 
+IMPORTANT PATTERNS:
+
+1. **Location-Based Invoice Queries:**
+   - When asking about "[State/Location] invoices", use `place_of_supply` NOT `vendor.state`
+   - Example: "Karnataka invoices with IGST" means:
+     ```sql
+     WHERE i.place_of_supply = 'Karnataka' AND i.igst > 0
+     ```
+   - Only use `vendor.state` if explicitly asking about vendors FROM a location
+   - Remember: IGST applies to inter-state transactions (place_of_supply ≠ vendor.state)
+
+2. **Time-Based Aggregation (Monthly/Yearly):**
+   - For questions about "monthly" anything, use:
+     `GROUP BY YEAR(date), MONTH(date)` or `DATE_FORMAT(date, '%Y-%m')`
+   - For totals per month: `SUM(total_amount) as monthly_total`
+   
+3. **Rule 86B Compliance:**
+   - This rule applies to MONTHLY AGGREGATE purchases exceeding ₹50,00,000
+   - Query pattern:
+     ```sql
+     SELECT 
+       DATE_FORMAT(date, '%Y-%m') as month,
+       SUM(total_amount) as monthly_total,
+       COUNT(*) as invoice_count
+     FROM invoices
+     GROUP BY DATE_FORMAT(date, '%Y-%m')
+     HAVING SUM(total_amount) > 5000000
+     ```
+   - DO NOT check individual invoices > ₹50L, check monthly aggregates!
+
+4. **Compliance Threshold Queries:**
+   - When context mentions limits (like ₹50 lakh), apply to aggregates not individuals
+   - Include both the threshold check AND supporting invoice details
+
 """
         
         if context:
@@ -93,6 +127,7 @@ Requirements:
 {context}
 
 Use this context to inform your SQL query (e.g., if the context mentions specific limits or thresholds, incorporate them).
+Pay special attention to whether the rule applies to individual transactions or aggregated amounts.
 
 """
         

@@ -73,7 +73,12 @@ class DatabaseConnection:
         try:
             connection = self.get_connection()
             with connection.cursor() as cursor:
-                cursor.execute(query, params or ())
+                # Only pass params if they're actually provided and non-empty
+                # This prevents % in DATE_FORMAT from being interpreted as placeholders
+                if params:
+                    cursor.execute(query, params)
+                else:
+                    cursor.execute(query)
                 results = cursor.fetchall()
                 logger.debug(f"Query executed successfully. Rows returned: {len(results)}")
                 return results
